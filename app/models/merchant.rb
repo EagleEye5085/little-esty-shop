@@ -1,13 +1,14 @@
 class Merchant < ApplicationRecord
   validates_presence_of :name
-  validates_presence_of :status 
+  validates_presence_of :status
   enum status: {"disabled": 0, "enabled": 1}
 
   has_many :items, dependent: :destroy
-  has_many :invoice_items, through: :items 
+  has_many :invoice_items, through: :items
   has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
+  has_many :bulk_discounts
 
 
   def top_5
@@ -16,7 +17,7 @@ class Merchant < ApplicationRecord
     # .where(transactions: { result: 'success'})
     # .select('customers.*, count(transactions.result) as transaction_total')
     # .group(:id)
-    # binding.pry 
+    # binding.pry
     test = customers
     .joins(invoices: :transactions)
     .where(transactions: { result: :success })
@@ -24,16 +25,16 @@ class Merchant < ApplicationRecord
     .group(:id)
     .order('success_count desc')
     .limit(5)
-    # binding.pry 
+    # binding.pry
   end
 
   def unshipped_items
     # items.joins(:invoice_items).where(invoice_items: { status: 'packaged' }).select('items.*, invoice_items.invoice_id as invoice_id').order(:invoice_id)
-    # binding.pry 
+    # binding.pry
     test = invoice_items.joins(:invoice).where(status: 1).order("invoices.created_at")
-    # binding.pry 
+    # binding.pry
   end
-  
+
   def get_invoice_items(invoice_id)
     InvoiceItem.where(item_id: items.pluck(:id), invoice_id: invoice_id)
   end
@@ -77,6 +78,6 @@ class Merchant < ApplicationRecord
     .order("invoice_revenue desc")
     .limit(1)
     .first
-    .date 
+    .date
   end
 end
