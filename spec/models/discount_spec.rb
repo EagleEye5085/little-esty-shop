@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BulkDiscount, type: :model do
+RSpec.describe Discount, type: :model do
   include ActiveSupport:: Testing::TimeHelpers
 
   describe 'validations' do

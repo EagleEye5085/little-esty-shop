@@ -1,14 +1,14 @@
-require 'rails_helper' 
+require 'rails_helper'
 
-RSpec.describe 'Admin Merchant Show Page' do 
+RSpec.describe 'Admin Merchant Show Page' do
     # Admin Merchant Update
     # As an admin,
     # When I visit a merchant's admin show page
     # Then I see a link to update the merchant's information.
     # When I click the link
     # Then I am taken to a page to edit this merchant
-    it 'has a form to update the Merchant inforation' do 
-        Faker::UniqueGenerator.clear 
+    it 'has a form to update the Merchant inforation' do
+        Faker::UniqueGenerator.clear
         merchant_1 = Merchant.create!(name: Faker::Name.unique.name)
 
         visit admin_merchant_path(merchant_1)
@@ -17,4 +17,15 @@ RSpec.describe 'Admin Merchant Show Page' do
 
         expect(current_path).to eq("/admin/merchants/#{merchant_1.id}/edit")
     end
+
+    it 'has a link to view all my discounts' do
+      Faker::UniqueGenerator.clear
+      merchant_1 = Merchant.create!(name: Faker::Name.unique.name)
+
+      visit "merchants/#{merchant_1.id}/dashboard"
+
+      click_link("View Discounts")
+
+      expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts")
+  end
 end
