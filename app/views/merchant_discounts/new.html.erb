@@ -1,0 +1,26 @@
+<h1>Create Item</h1>
+
+<% flash.each do |type, msg| %>
+    <div class='flash_red'><%= msg %></div>
+    <br>
+<% end %>
+
+<div id="create-form">
+  <%= form_with url: merchant_discounts_path(@merchant), method: :post, local: true do |form| %>
+    <div id="precentage-field">
+      <%= form.label :precentage, "Precentage Amount: " %>
+      <%= form.text_field :precentage %>
+    </div>
+
+    <br>
+
+    <div id="quantity-field">
+      <%= form.label :quantity, "Quantity threshold: " %>
+      <%= form.text_area :quantity %>
+    </div>
+
+    <br>
+
+    <%= form.submit 'Create Discount' %>
+  <% end %>
+</div>

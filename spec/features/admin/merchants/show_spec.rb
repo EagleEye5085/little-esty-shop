@@ -17,15 +17,4 @@ RSpec.describe 'Admin Merchant Show Page' do
 
         expect(current_path).to eq("/admin/merchants/#{merchant_1.id}/edit")
     end
-
-    it 'has a link to view all my discounts' do
-      Faker::UniqueGenerator.clear
-      merchant_1 = Merchant.create!(name: Faker::Name.unique.name)
-
-      visit "merchants/#{merchant_1.id}/dashboard"
-
-      click_link("View Discounts")
-
-      expect(current_path).to eq("/merchants/#{merchant_1.id}/discounts")
-  end
 end

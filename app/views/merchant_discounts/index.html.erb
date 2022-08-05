@@ -1,3 +1,16 @@
 <div id="header">
-    <%= render "shared/admin_header" %>
+    <%= render "shared/merchant_header" %>
+</div>
+
+<h3><%= link_to "Create discount", new_merchant_discount_path(@merchant) %></h3>
+
+<div class="content">
+  <h2>discounts</h2>
+  <% @merchant.discounts.distinct.each do |discount| %>
+      <div id="discount-<%= discount.id %>" >
+         <%= link_to "Discount ##{discount.id}", merchant_discount_path(@merchant, discount) %>
+         <p> discount precentage: %<%= discount.precentage %></p>
+         <p> quantity threshold: <%= discount.quantity %></p>
+      </div>
+  <% end %>
 </div>
