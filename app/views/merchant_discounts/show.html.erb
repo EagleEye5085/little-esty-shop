@@ -2,6 +2,11 @@
     <%= render "shared/merchant_header" %>
 </div>
 
+<% flash.each do |type, msg| %>
+    <div class='flash_green'><%= msg %></div>
+    <br>
+<% end %>
+
 <h2>Discount #<%= @discount.id %></h2>
 
  <p> discount precentage: %<%= @discount.precentage %></p>

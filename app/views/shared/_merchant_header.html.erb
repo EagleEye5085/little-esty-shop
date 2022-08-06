@@ -4,6 +4,7 @@
         <span id='1' class='top-links'> <%= link_to("Dashboard", "/merchants/#{@merchant.id}/dashboard") %></span>
         <span id='2' class='top-links'> <%= link_to("My Items", merchant_items_path(@merchant)) %></span>
         <span id='3' class='top-links'><%= link_to("My Invoices", merchant_invoices_path(@merchant)) %></span>
+        <span id='4' class='top-links'><%= link_to("My Discounts", merchant_discounts_path(@merchant)) %></span>
     </div>
 </span>
 
