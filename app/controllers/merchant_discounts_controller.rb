@@ -10,17 +10,18 @@ class MerchantDiscountsController < ApplicationController
 
   def edit
       @discount = Discount.find(params[:id])
+      @merchant = Merchant.find(params[:merchant_id])
   end
 
   def update
       discount = Discount.find(params[:id])
+      # binding.pry
       discount.update(discount_params )
-      if params[:precentage]
-          redirect_to admin_merchants_discounts_path
-      elsif params[:name].blank?
-          redirect_to edit_admin_merchants_discount_path(params[:id]), alert: "Please enter a precentage."
+      if  params[:precentage].blank? || params[:quantity].blank?
+        flash[:alert] = "Discount not updated: Please fill out all fields."
+        redirect_to edit_merchant_discount_path(Merchant.find(params[:merchant_id]), discount)
       else
-          redirect_to admin_merchants_discount_path(discount), notice: "Discount information was successfully updated!"
+        redirect_to merchant_discount_path(Merchant.find(params[:merchant_id]), discount), notice: "Discount information was successfully updated!"
       end
   end
 

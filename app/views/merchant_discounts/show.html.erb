@@ -6,3 +6,6 @@
 
  <p> discount precentage: %<%= @discount.precentage %></p>
  <p> quantity threshold: <%= @discount.quantity %></p>
+
+
+<%= link_to "Update Discount", edit_merchant_discount_path(@merchant, @discount) %>
