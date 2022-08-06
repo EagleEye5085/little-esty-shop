@@ -52,5 +52,4 @@ save_and_open_page
     expect(page).to_not have_content("quantity threshold: 10")
   end
 
-
 end
