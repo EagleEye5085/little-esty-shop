@@ -33,7 +33,11 @@
                     <%= f.submit "Update Item Status"%>
                     <% end %>
                     </td>
-                <td><%= invoice_item.quantity %></td>
+                <td><% if invoice_item.find_best_discount.nil? %>
+                        none
+                      <% else %>
+                        <%= link_to "Available Discount", merchant_discount_path(@merchant, invoice_item.find_best_discount.id) %>
+                    <% end %></td>
             </tr>
         <% end %>
     </table>

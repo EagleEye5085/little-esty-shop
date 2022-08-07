@@ -108,31 +108,29 @@ RSpec.describe 'Merchant invoice Show page' do
     discount_2 = Discount.create!(percentage: 15, quantity: 500, merchant_id: merchant.id)
 
     visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
-save_and_open_page
+
     expect(page).to have_content("Discounted Revenue: $5,703,465.13")
   end
 
   it 'has a link to the applied discount' do
     merchant = Merchant.create!(name: 'amazon')
-    merchant_2 = Merchant.create!(name: 'Gucci')
+
     customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+    
     item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
-    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
-    item_3 = Item.create!(name: 'bay blade', description: 'let it rip!', unit_price: 23400, merchant_id: merchant_2.id)
+
     invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
-    invoice_2 = Invoice.create!(status: 'in progress', customer_id: customer.id)
+
 
     InvoiceItem.create!(quantity: 2121, unit_price: 12345, status: 'shipped', item: item_1, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 234, unit_price: 2353456, status: 'packaged', item: item_2, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 2345, unit_price: 2353, status: 'packaged', item: item_3, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 321, unit_price: 3254, status: 'shipped', item: item_1, invoice: invoice_2)
+
 
     discount_1 = Discount.create!(percentage: 25, quantity: 1000, merchant_id: merchant.id)
-    discount_2 = Discount.create!(percentage: 15, quantity: 500, merchant_id: merchant.id)
+
 
     visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
-
-    
+save_and_open_page
+    expect(page).to have_link("Available Discount")
   end
 
 end

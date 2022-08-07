@@ -22,8 +22,6 @@ class Invoice < ApplicationRecord
   end
 
   def total_discounted_revenue
-    binding.pry
     invoice_items.sum{|item| item.discount_price}
-    # binding.pry
   end
 end
