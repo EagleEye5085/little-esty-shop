@@ -116,7 +116,7 @@ RSpec.describe 'Merchant invoice Show page' do
     merchant = Merchant.create!(name: 'amazon')
 
     customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
-    
+
     item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
 
     invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
@@ -129,8 +129,8 @@ RSpec.describe 'Merchant invoice Show page' do
 
 
     visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
-save_and_open_page
-    expect(page).to have_link("Available Discount")
+
+    expect(page).to have_link("Applied Discount")
   end
 
 end

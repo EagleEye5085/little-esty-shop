@@ -2,61 +2,64 @@ require 'rails_helper'
 
 RSpec.describe 'Admin Invoices Show Page' do
   before :each do
-    Faker::UniqueGenerator.clear 
+    Faker::UniqueGenerator.clear
     @merchant_1 = Merchant.create!(name: Faker::Company.unique.name)
     @merchant_2 = Merchant.create!(name: Faker::Company.unique.name)
-    
+
     @customer_1 = Customer.create!(first_name: Faker::Name.unique.first_name, last_name: Faker::Name.unique.last_name)
-    
-    @item_1 = Item.create!( name: Faker::Commerce.unique.product_name, 
-                            description: 'Our first test item', 
-                            unit_price: rand(100..10000), 
+
+    @item_1 = Item.create!( name: Faker::Commerce.unique.product_name,
+                            description: 'Our first test item',
+                            unit_price: rand(100..10000),
                             merchant_id: @merchant_1.id)
 
-    @item_2 = Item.create!( name: Faker::Commerce.unique.product_name, 
-                            description: 'Our second test item', 
-                            unit_price: rand(100..10000), 
+    @item_2 = Item.create!( name: Faker::Commerce.unique.product_name,
+                            description: 'Our second test item',
+                            unit_price: rand(100..10000),
                             merchant_id: @merchant_1.id)
 
-    @item_3 = Item.create!( name: Faker::Commerce.unique.product_name, 
-                            description: 'Our third test item', 
-                            unit_price: rand(100..10000), 
+    @item_3 = Item.create!( name: Faker::Commerce.unique.product_name,
+                            description: 'Our third test item',
+                            unit_price: rand(100..10000),
                             merchant_id: @merchant_2.id)
 
-    @invoice_1 = Invoice.create!( status: 'completed', 
+    @invoice_1 = Invoice.create!( status: 'completed',
                                   customer_id: @customer_1.id)
 
-    @invoice_2 = Invoice.create!( status: 'cancelled', 
-                                  customer_id: @customer_1.id)
-    
-    @invoice_3 = Invoice.create!( status: 'in progress', 
+    @invoice_2 = Invoice.create!( status: 'cancelled',
                                   customer_id: @customer_1.id)
 
-    @invoice_item_1 = InvoiceItem.create!(quantity: 1, 
-                                          unit_price: 5000, 
-                                          status: 'shipped', 
-                                          item_id: @item_1.id, 
+    @invoice_3 = Invoice.create!( status: 'in progress',
+                                  customer_id: @customer_1.id)
+
+    @invoice_item_1 = InvoiceItem.create!(quantity: 1,
+                                          unit_price: 5000,
+                                          status: 'shipped',
+                                          item_id: @item_1.id,
                                           invoice_id: @invoice_1.id)
 
-    @invoice_item_2 = InvoiceItem.create!(quantity: 5, 
-                                          unit_price: 10000, 
-                                          status: 'shipped', 
-                                          item_id: @item_2.id, 
+    @invoice_item_2 = InvoiceItem.create!(quantity: 5,
+                                          unit_price: 10000,
+                                          status: 'shipped',
+                                          item_id: @item_2.id,
                                           invoice_id: @invoice_1.id)
 
-    @invoice_item_3 = InvoiceItem.create!(quantity: rand(1..10), 
-                                          unit_price: 15000, 
-                                          status: 'shipped', 
-                                          item_id: @item_1.id, 
+    @invoice_item_3 = InvoiceItem.create!(quantity: rand(1..10),
+                                          unit_price: 15000,
+                                          status: 'shipped',
+                                          item_id: @item_1.id,
                                           invoice_id: @invoice_2.id)
 
-    @invoice_item_4 = InvoiceItem.create!(quantity: rand(1..10), 
-                                          unit_price: 25000, 
-                                          status: 'shipped', 
-                                          item_id: @item_3.id, 
+    @invoice_item_4 = InvoiceItem.create!(quantity: rand(1..10),
+                                          unit_price: 25000,
+                                          status: 'shipped',
+                                          item_id: @item_3.id,
                                           invoice_id: @invoice_3.id)
+
+    @discount_1 = Discount.create!(percentage: 25, quantity: 5, merchant_id: @merchant_1.id)
+    @discount_2 = Discount.create!(percentage: 50, quantity: 10, merchant_id: @merchant_1.id)
   end
-  
+
   # User Story 33
   # Admin Invoice Show Page
 
@@ -87,7 +90,7 @@ RSpec.describe 'Admin Invoices Show Page' do
   # Item name
   # The quantity of the item ordered
   # The price the Item sold for
-  # The Invoice Item status 
+  # The Invoice Item status
   it 'shows information for all of the invoice items on an invoice' do
     visit "/admin/invoices/#{@invoice_1.id}"
 
@@ -109,7 +112,7 @@ RSpec.describe 'Admin Invoices Show Page' do
       expect(page).to_not have_content(@invoice_item_4.item.name)
     end
   end
-  
+
   # User Story 35
   # Admin Invoice Show Page: Total Revenue
 
@@ -148,5 +151,12 @@ RSpec.describe 'Admin Invoices Show Page' do
       expect(page).to have_content("completed")
     end
   end
-end
 
+  it 'shows the total revenue with discounts applied' do
+
+      visit "/admin/invoices/#{@invoice_1.id}"
+save_and_open_page
+      expect(page).to have_content("Discounted Revenue: $425.00")
+  end
+
+end
