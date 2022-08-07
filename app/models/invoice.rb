@@ -2,7 +2,7 @@ class Invoice < ApplicationRecord
   validates_presence_of :status, presence: true
 
   belongs_to :customer
-  
+
   has_many :transactions, dependent: :destroy
   has_many :invoice_items, dependent: :destroy
   has_many :items, through: :invoice_items
@@ -18,10 +18,12 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    revenue_generated = 0
-    invoice_items.each do |invoice_item|
-      revenue_generated += (invoice_item.quantity * invoice_item.unit_price)
-    end
-    revenue_generated
+    invoice_items.sum("quantity * unit_price")
+  end
+
+  def total_discounted_revenue
+    binding.pry
+    invoice_items.sum{|item| item.discount_price}
+    # binding.pry
   end
 end

@@ -7,9 +7,9 @@
 
 <div id="update-form">
   <%= form_with url: merchant_discount_path(@discount.merchant_id, @discount), method: :patch, local: true do |form| %>
-    <div id="precentage-field">
-      <%= form.label :precentage, "Discount Precentage: " %>
-      <%= form.text_field :precentage, value: @discount.precentage %>
+    <div id="percentage-field">
+      <%= form.label :percentage, "Discount Percentage: " %>
+      <%= form.text_field :percentage, value: @discount.percentage %>
     </div>
 
     <br>

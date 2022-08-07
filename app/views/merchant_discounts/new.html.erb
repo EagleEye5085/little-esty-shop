@@ -7,9 +7,9 @@
 
 <div id="create-form">
   <%= form_with url: merchant_discounts_path(@merchant), method: :post, local: true do |form| %>
-    <div id="precentage-field">
-      <%= form.label :precentage, "Precentage Amount: " %>
-      <%= form.text_field :precentage %>
+    <div id="percentage-field">
+      <%= form.label :percentage, "Percentage Amount: " %>
+      <%= form.text_field :percentage %>
     </div>
 
     <br>
