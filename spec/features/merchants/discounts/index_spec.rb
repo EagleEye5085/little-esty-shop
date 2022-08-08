@@ -52,4 +52,20 @@ it 'shows discounts including their percentage discount and quantity thresholds'
     expect(page).to_not have_content("quantity threshold: 10")
   end
 
+  it 'has the next 3 holidays listed' do
+    Faker::UniqueGenerator.clear
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name)
+
+    discount_1 = Discount.create!(percentage: 15, quantity: 10, merchant_id: merchant_1.id)
+    discount_2 = Discount.create!(percentage: 25, quantity: 20, merchant_id: merchant_1.id)
+
+
+    visit merchant_discounts_path(merchant_1)
+save_and_open_page
+    expect(page).to have_content('Upcoming Holidays')
+
+    expect("Labour Day").to appear_before("Columbus Day")
+    expect("Columbus Day").to appear_before("Veterans Day")
+  end
+
 end

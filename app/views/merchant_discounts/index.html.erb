@@ -15,3 +15,8 @@
         <%= link_to "Delete", merchant_discount_path(@merchant, discount), method: :delete %>
     </div>
 <% end %>
+
+<h2>Upcoming Holidays</h2>
+<% @search.next_3_holidays.each do |h| %>
+  <p><%="#{h.name} #{h.date}" %></p>
+  <% end %>
