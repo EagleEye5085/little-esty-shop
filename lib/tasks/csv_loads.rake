@@ -8,6 +8,14 @@ task "csv_load:customers" => [ :environment ] do
   end
 end
 
+desc "Creates discounts from a CSV."
+task "csv_load:discounts" => [ :environment ] do
+  Discount.destroy_all
+  CSV.foreach('db/data/discounts.csv', headers: true) do |row|
+    Customer.create!(row.to_h)
+  end
+end
+
 desc "Creates merchants from a CSV."
 task "csv_load:merchants" => [ :environment ] do
   Merchant.destroy_all
@@ -58,11 +66,8 @@ task "csv_load:all" do
   Rake::Task["csv_load:invoices"].invoke
   Rake::Task["csv_load:transactions"].invoke
   Rake::Task["csv_load:invoice_items"].invoke
-  ActiveRecord::Base.connection.tables.each do |table_name| 
+  Rake::Task["csv_load:discounts"].invoke
+  ActiveRecord::Base.connection.tables.each do |table_name|
     ActiveRecord::Base.connection.reset_pk_sequence!(table_name)
   end
 end
-
-
-
-
